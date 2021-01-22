@@ -1,0 +1,110 @@
+.navbar {
+  background-color:  rgb(0, 0, 20) ;
+  }
+#hovhov:hover {
+    background-color: rgb(212, 237, 243);
+  }
+#secondbar {
+  background-color:  rgb(130, 136, 255) ;
+  }
+#menu-main-nav {
+  font-size: 20px;
+  text-align: center;
+  padding-left: 50px;
+}
+#comment {
+  margin-left: 30px;
+
+}
+
+/* .del-up {
+  padding-left: 1000px;
+} */
+body {
+    background-color: rgb(244, 244, 252);
+  }
+  
+.navbar-brand {
+  margin-left: 16px;
+}
+
+#dateadd {
+  font-size: 12px;
+  }
+  
+#searchz {
+      margin-left: -20px;
+      margin-right: 30px;
+      padding-left: 520px ;
+  }
+#user-info {
+  padding-left: 80px ;
+}
+
+  #footer {
+    
+    width:100%;
+    position: absolute;
+    pointer-events: none ; /*enable href over absolute */
+   
+  }
+  .lead {
+    padding-left: 500px;
+  }
+
+  .pagination{
+    padding-left: 600px;
+  }
+  #imgs {
+      max-width: 100%;
+      max-height: 100%;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+  }
+  
+  #img234 {
+    margin-top: 130px;
+    
+  }
+  /* #banner {
+    height: 500px;
+  } */
+
+.product_title {
+  font-size: 20px;
+  text-transform: uppercase;
+  letter-spacing: .2em;
+  padding-top: 15px;
+  padding-bottom: 10px;
+}
+
+.product_text {
+  padding-right: 20px;
+}
+
+.product_description {
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: .2em;
+}
+
+.errorlist li {
+  color: red;
+  font-weight: bold;
+}
+
+.custom_div {
+  margin-bottom: 20px !important;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#navbarSupportedContent {
+  margin-left: 45px;
+}
+
+#bar2 a:hover  {
+  background-color: rgb(152, 156, 252);
+}

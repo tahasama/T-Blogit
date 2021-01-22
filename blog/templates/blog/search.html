@@ -1,0 +1,34 @@
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Search{% endblock %}
+{% block content %}
+
+<div class="container" >
+<div class="jumbotron">
+<h4>Courses containing : "{{ query }}"
+     Found {{ results.count }} result{{ results.count|pluralize }}
+  
+</h4>
+{% for course in results %}
+ <ol>
+<h4><a href="{{ course.get_absolute_url }}">{{ course.title }}</a></h4>
+  <ul>  <h5>{{ course.overview|truncatewords_html:12 }} </h5></ul>
+</ol>
+    {% empty %}
+    <p>There are no results for your query.</p>
+    {% endfor %}
+<br>
+    <h3>Search for more courses :</h3>
+
+    <form class="d-flex" method="GET">
+      <input class="form-control me-4" type="search" name="query" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success"  type="submit">Search</button>
+    </form>
+      </div>
+    </div>
+
+   
+
+    {% endblock %}
+

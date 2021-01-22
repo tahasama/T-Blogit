@@ -1,0 +1,114 @@
+{% load custom_tags %}
+<nav class="navbar navbar-expand-md navbar-light ">
+
+  <a href="{% url 'blog:home' %}" class="navbar-brand "><i class=""></i><i class="fas fa-blog fa-2x" style="color: #c666ec"> </i></a>
+
+
+    
+  <button class="navbar-toggler bg-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+  <ul class="navbar-nav">    
+
+    {% if not request.user.is_authenticated %}
+      
+      <li class="nav-item">
+        <a class="nav-link text-light  font-weight-bold px-3" href="{% url 'login' %}">
+          Log In <i class="fas fa-user-plus"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-light  font-weight-bold px-3" href="{% url 'registration'%}">
+          Register <i class="fas fa-sign-in-alt"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-light font-weight-bold px-3"  href="{% url 'w_register'%}?writer">
+          are you writer ? <i class="fas fa-pen-alt"></i>
+        </a>
+      </li>
+    {% endif %}
+
+    
+    <li class="nav-item">
+      
+      </a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-link text-light  font-weight-bold px-3" href="{% url 'blog:contact' %}">
+        Contact</i>
+      </a>
+    </li>
+ 
+
+  <form class="form-inline ml-3" action="{% url 'blog:search' %}", method="GET">
+    <div class="input-group" id="searchz">
+      <input type="text" name="query" class="form-control" placeholder="Search">
+      <div class="input-group-append">
+        <button type="submit" class="btn btn-none" ><i class="fas fa-search" style="color: #abd8dd"></i></button>
+      </div>
+    </div>
+  </form>
+  {% if request.user.is_authenticated %}
+  <li class="nav-item" >
+    {% if request.user|is_writer:"writer" %}
+    <li class="nav-item" id="wblock">
+      <a class="nav-link text-light  font-weight-bold px-3" href="{% url 'blog:post_list_author'%}?writer">
+        writer's block <i class="fas fa-keyboard"></i>
+      </a>
+    </li>
+    {% endif %}
+    <div id="user-info">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-light bold px-3" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fas fa-user circle"></i>
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <li><a class="dropdown-item" id="hovhov" href="{% url 'blog:edit' %}"><b>{{ request.user.username }}</b>'s info </a></li>
+     
+          <li><a class="dropdown-item " id="hovhov" href="{% url 'password_change' %}"> <i class="fas fa-exchange-alt"></i> Change Password</a></li>
+          <li><a class="dropdown-item " id="hovhov" href="{% url 'logout' %}"> <i class="fas fa-sign-out-alt"></i> Log Out</a></li>
+
+      
+        </ul>
+      </li>
+      </div>
+    </li>
+    
+  {% endif %}
+
+</ul>
+</div>
+</nav>
+
+
+<nav class="navbar navbar-expand-lg navbar-light" id="secondbar">
+  <div class="container-fluid">
+    
+
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+  
+{%for c in links%}
+<ul id="menu-main-nav" class="navbar-nav nav-fill w-100">
+    <li  class="" id="bar2">
+      <a class="nav-link text-light" href="{{c.get_absolute_url}}">{{c.name}}</i></a>
+    </li>
+  </ul>
+    <ul >
+
+ </ul>
+{%endfor%}
+  
+</div>
+</div>
+</nav>
+
+  
+
+
+
+
+
+

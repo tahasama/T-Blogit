@@ -1,0 +1,111 @@
+{% extends "blog/base.html" %}
+{% load static %}
+{% load custom_tags %}
+{% load widget_tweaks %}
+{% block title %}{{ post.title }}{% endblock %}
+{% block content %}
+
+
+
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-9 mx-auto col-md-6 col-lg-12">
+            <div class="card mb-2" style="border-color: transparent; background: #dfdff1">
+
+
+                <div class="p-4">
+                    
+                  <h3 class="card-img-top ">{{ post.title }}</h3> 
+                   
+                  </div>
+                  <h6 class="font-weight-bold mb-0 text-secondary" style="margin-left: 20px;" >
+                    <p class="date">
+                        {% if post.published %}
+                     <i> Published {{ post.publish_date }} by <u>{{ post.author }}</u></i>
+                     {% else %}
+                     Not aprrouved yet.
+                     {% endif %}
+                    </p>
+                  </h6>
+                  <h5><span class="badge badge-secondary text-secondary mb-2">
+              
+                    Tags:
+                    {% for tag in post.tags.all %}
+                      <a class="text-decoration-none " style="color:rgb(136, 44, 148)" href="{% url 'blog:post_list_by_tag' tag.slug %}">
+                        {{ tag.name }}
+                      </a>
+                        {% if not forloop.last %},
+                        {% endif %}
+                    {% endfor %}
+            
+                  </span></h5>
+                  <h4 class="text-dark  mb-0 " style="margin-left: 20px;">
+                    <i> <span class="mr-1"></span> {{ post.body|safe }}</i></h4>
+           
+
+                {% if request.user|is_writer:"writer" and post.commenter == request.user%}
+
+
+            
+                <h6><a href="{% url 'blog:update_post'  post.slug %} " class="text-decoration-none"><i class="fas fa-edit"></i> update</a>&nbsp;&nbsp;
+                  <a href="{% url 'blog:delete_post'  post.slug %}" class="text-decoration-none"><i class="fas fa-trash-alt"></i> delete</a></h6>
+         
+                {% endif %}
+                  {% if similar_posts %}
+                <h4>&nbsp;Similar posts</h4>
+                {% for similar_post in similar_posts %}
+                <h5>
+                    <a class="text-decoration-none" href="{{ post.get_absolute_url }}">&nbsp;&nbsp;&nbsp;&nbsp;{{similar_post.title}}</a>
+                </h5>
+                {% endfor %}
+                {% endif %}
+                <br>
+                    {% if post.published and user.is_authenticated %}
+
+                        <h4>&nbsp; Add a new comment :</h4>
+
+                        <div class="card-body" >
+                            <form method="post">
+                              {% csrf_token %}
+                              <div class="form-group">
+                                <div class="input-group mb-3">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-comment text-dark mt-4 mb-4"></i></span>
+                                  </div>
+                                  {% render_field form.content rows="" class="form-control" placeholder="write your comment"  %}
+                                </div>
+                              </div>
+                              <br>
+                              <div class="form-group">
+                              <button type="submit" class="btn btn-success" style="width: 100px;">Post</button>
+                              </div>
+                            </form>
+                          </div>
+
+                          
+                          {% if comments %}
+                          <h5>&nbsp; Comments :</h5>
+                        {% for comment in comments %}
+                       
+                        <h6 class="font-weight-bold mb-0 text-secondary" style="margin-left: 20px;" >
+                          
+                          <p class="date">
+                           <i> {{ comment.created }} by <u>{{ comment.commenter }}</u></i>
+                          </p>
+                        </h6>
+                        <h6 id="comment"><a  href="{{comment.get_absolute_url}}/update_comment " class="text-decoration-none  "><i class="fas fa-edit pt-2"></i> </a>&nbsp;&nbsp;
+                          <a href="{{comment.get_absolute_url}}/delete_comment" class="text-decoration-none"><i class="fas fa-trash-alt"></i> </a></h6>
+          
+                        <h5 class="text-dark  mb-0 pt-1 mb-2" style="margin-left: 20px;">
+                          <i> <span class="mr-1"></span> {{ comment.content|safe }}</i></h5>
+
+                       
+                        {% endfor %}
+                        {% endif %}
+
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

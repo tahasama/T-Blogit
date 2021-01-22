@@ -1,0 +1,145 @@
+{% extends "blog/base.html" %}
+{% load static %}
+{% load custom_tags %}
+{% block title %}My Blog{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+
+{% for message in messages %}
+<div class="alert alert-info text-center" role="alert">
+  <li>{{ message }}</li>
+</div>
+{% endfor %}
+{% endif %}
+{%if category%}
+
+<img id="banner" width="100%" src="{{category.image.url}}" alt="">
+{%else%}
+{% if 'writer' in request.GET %}
+<img src="{% static 'image/blog.jpg' %}" width="100%">
+{%else%}
+<img src="{% static 'image/blog3.png' %}" width="100%">
+{%endif%}
+{%endif%}
+
+<br>
+{% if request.user|is_writer:"writer" %}
+<br>
+  <a class="nav-link text-dark  font-weight-bold px-3" href="{% url 'blog:create_post'%}">
+    <button type="button" class="btn btn-primary btn-lg">Create a new blog <i class="fas fa-sign-in-alt"></i></button>
+    
+  </a>
+
+{% endif %}
+
+<br>
+{% if tag %}
+<h4>&nbsp;Posts tagged with "{{ tag.name }}" : </h4>
+{% endif %}
+
+
+
+{%if not category.slug and not 'writer' in request.GET%}
+<h3 class="text-center pb-2">Checkout our diverse category</h3>
+
+<div class="container">
+  <div class="row">
+    {%for c in links%}
+ <div class="col-9 mx-auto col-md-6 col-lg-3">
+  <div class="card mb-4" >
+
+      <a class="text-decoration-none" href="{{c.get_absolute_url}}">
+        <img src="{{c.image.url}}" class="card-img-top " alt="{{product.name}}">
+        <h5 class="font-weight-bold mb-0 text-center  text-secondary">
+          {{c.name}}
+        </h5>
+    </a>
+  </div>
+</div>{%endfor%}
+</div></div>
+
+<h3 class="text-center pb-2">Checkout our latest posts</h3>
+{% endif %}
+{% for post in posts %}
+<div class="container">
+  <div class="row">
+    <div class="col-9 mx-auto col-md-6 col-lg-12">
+      <div class="card mb-2" style="border-color: transparent; background: #dfdff1">
+       
+        {% if request.user|is_writer:"writer" and post.author == request.user%}
+        {% if not post.published %}
+        <div class="alert alert-info text-center" role="alert">
+          Not aprrouved yet.
+        </div>
+        {% endif %}
+        {% endif %}
+        <div class="p-4">
+          <a class="text-decoration-none text-dark" href="{{post.get_absolute_url}}">
+            <h3 class="card-img-top ">{{ post.title }}</h3>
+          </a>
+        </div>
+        <div class="group inline">
+          <h6 class="font-weight-bold mb-0 text-secondary" style="margin-left: 20px;">
+            <p class="date">
+              {% if post.published %}
+              <i> Published {{ post.publish_date }} by <u>{{ post.author }}</u></i>
+              {% else %}
+              Not aprrouved yet.
+              {% endif %}
+
+            </p>
+          </h6>
+
+          <h5><span class="badge badge-secondary text-secondary mb-2">
+
+              Tags:
+              {% for tag in post.tags.all %}
+              <a class="text-decoration-none text-secondary" href="{% url 'blog:post_list_by_tag' tag.slug %}">
+                {{ tag.name }}
+              </a>
+              {% if not forloop.last %},
+              {% endif %}
+              {% endfor %}
+
+            </span></h5>
+        </div>
+
+        <h5 class="text-dark  mb-0 " style="margin-left: 20px;">
+          <i> <span class="mr-1"></span> {{ post.introduction|truncatewords:50|safe }}</i>
+          <br><br>
+         <h6>&nbsp; Comments:  {{post.comments.count}}</h6>
+          {% if request.user|is_writer:"writer" and post.author == request.user%}
+          <h6><a href="{% url 'blog:update_post'  post.slug %} " class="text-decoration-none">&nbsp;&nbsp;<i
+                class="fas fa-edit"></i>update</a>&nbsp;&nbsp;
+            <a href="{% url 'blog:delete_post'  post.slug %}" class="text-decoration-none"><i
+                class="fas fa-trash-alt"></i>delete</a>
+          </h6>
+          {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endfor %}
+
+{%if category.slug or 'writer' in request.GET%}
+<div class="pagination ">
+  <span class="step-links">
+    <h5>
+      {% if posts.has_previous %}
+      <a href="?page={{ posts.previous_page_number }}"><i class="fas fa-backward "></i>previous</a>
+      {% endif %}
+      <span class="current">
+        Page {{ posts.number }} of {{ posts.paginator.num_pages }}.
+      </span>
+      {% if posts.has_next %}
+      <a href="?page={{ posts.next_page_number }}"><i class="fas fa-forward "></i>next</a>
+      {% endif %}
+    </h5>
+  </span>
+</div>
+{%endif%}
+{% endblock %}
